@@ -1,15 +1,6 @@
-# song share
-Share your favorite songs, and see what others are listening to.
-
-<br />
-Current state of the application: <br />
-- The user can create an account and log in to the application.<br />
-- The user can add, edit, and delete posts and songs.<br />
-- The user sees the posts and songs added to the application.<br />
-- The user can search for songs by keyword.<br />
-- The user can select one or more classifications for a data item. <br />
-- The user can send comments to another user's post, which will be displayed in the application.<br />
-- The user page shows statistics and user-added data items. <br />
+Task: <br />
+create a web application that has at least 5 different flaws from the OWASP top ten list as well as their fixes. <br />
+I am using 2021's top ten list.
 
 <br />
 To run the application, first:
