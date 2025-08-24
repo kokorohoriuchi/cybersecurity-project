@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Edit post{% endblock %}
+{% block content %}
+
+<h2>Edit post</a>
+
+<form action="/edit/{{ message.id }}" method="post">
+  <p>
+    <label for="content">Content</label>:<br />
+    <textarea id="content" name="content" rows="5" cols="40" maxlength="5000">{{ message.content }}</textarea>
+  </p>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

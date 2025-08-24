@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ thread.title }}{% endblock %}
+
+{% block content %}
+
+<h2>{{ thread.title }}</h2>
+
+{% for message in messages %}
+<div class="message">
+  <p id="{{ message.id }}">
+    <a href="/user/{{ message.user_id }}">{{ message.username }}</a>
+    ({{ message.sent_at }})
+  </p>
+  <p>
+    {{ message.content | show_lines }}
+  </p>
+  {% if message.user_id == session.user_id %}
+  <p>
+    <a href="/edit/{{ message.id }}">Edit</a>
+    <a href="/remove/{{ message.id }}">Delete</a>
+  </p>
+  {% endif %}
+</div>
+{% endfor %}
+
+{% if session.user_id %}
+<h3>Reply</h3>
+
+<form action="/new_message" method="post">
+  <p>
+    <label for="content">Message</label>:<br />
+    <textarea id="content" name="content" rows="5" cols="40" maxlength="5000"></textarea>
+  </p>
+  <input type="hidden" name="thread_id" value="{{ thread.id }}" />
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Submit" />
+</form>
+{% else %}
+<p>
+  If you want to send a reply, <a href="/login">login</a> first
+</p>
+{% endif %}
+
+{% endblock %}
