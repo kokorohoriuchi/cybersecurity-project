@@ -12,7 +12,7 @@ import songs
 from db import init_db, execute, query
 
 app = Flask(__name__)
-app.secret_key = config.SECRET_KEY
+app.secret_key = config.secret_key
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["DATABASE"] = os.path.join(basedir, "instance", "database.db")
 init_db(app)
