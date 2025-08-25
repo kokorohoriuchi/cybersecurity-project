@@ -6,7 +6,7 @@ from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session, url_for
 from functools import wraps
 import markupsafe
-import config, forum, users
+import forum, users
 import classifications
 import songs
 from db import init_db, execute, query
