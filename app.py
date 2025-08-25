@@ -6,15 +6,13 @@ from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session, url_for
 from functools import wraps
 import markupsafe
-from dotenv import load_dotenv
-import forum, users
+import config, forum, users
 import classifications
 import songs
 from db import init_db, execute, query
 
-load_dotenv()
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY')
+app.secret_key = config.secret_key
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["DATABASE"] = os.path.join(basedir, "instance", "database.db")
 init_db(app)
