@@ -2,19 +2,13 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import db
 
 def create_user(username, password):
-    #password_hash = generate_password_hash(password) # flaw: this is a default and known to be weak to attacks
+    password_hash = generate_password_hash(password) # flaw: this is a default and known to be weak to attacks
 #    fix: stronger hashing
 #    password_hash = generate_password_hash(
 #        password, 
 #        method='pbkdf2:sha256', 
-#        salt_length=16,
-#        iterations=310000  
+#        salt_length=16
 #    )
-    password_hash = generate_password_hash(
-        password, 
-        method='pbkdf2:sha256', 
-        salt_length=16
-    )
     sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
     db.execute(sql, [username, password_hash])
 
