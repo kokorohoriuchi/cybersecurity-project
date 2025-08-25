@@ -440,8 +440,8 @@ def add_song():
 @require_login
 def edit_song(song_id):
     song = songs.get_song(song_id)
-    if not song or song['user_id'] != session['user_id']:
-        abort(403)
+#    if not song or song['user_id'] != session['user_id']:
+#        abort(403)
         
     if request.method == "GET":
         song = songs.get_song(song_id)
