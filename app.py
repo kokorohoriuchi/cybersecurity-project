@@ -192,12 +192,28 @@ def search():
 
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
-    user = query("SELECT id, username, image IS NOT NULL as has_image FROM users WHERE id = ?", (user_id,), as_dict=True)
-
-#    if 'user_id' not in session or (session['user_id'] != user_id and not is_admin(session['user_id'])):
-#        abort(403)
-#    user = query("SELECT id, username, image IS NOT NULL as has_image FROM users WHERE id = ?", (user_id,), as_dict=True)
+    try:
+        user = query("""
+            SELECT id, username, 
+                   image IS NOT NULL as has_image
+            FROM users 
+            WHERE id = ?
+        """, (user_id,), as_dict=True)
+    except sqlite3.OperationalError as e:
+        print(f"Database error: {e}")  
+        user = query("""
+            SELECT id, username, 
+                   image IS NOT NULL as has_image
+            FROM users 
+            WHERE id = ?
+        """, (user_id,), as_dict=True)
     
+    if not user:
+        abort(404)
+    user = user[0]
+    if 'created_at' not in user:
+        user['created_at'] = None
+        
     stats = get_user_stats(user_id)
     recent_songs = get_user_songs(user_id)
     messages = query("""
