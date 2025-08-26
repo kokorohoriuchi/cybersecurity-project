@@ -65,5 +65,5 @@ def search(query_term):
               u.id = m.user_id AND
               m.content LIKE ?
         ORDER BY m.sent_at DESC
-    """, ["%" + query_term + "%"]) # a LIKE injection could happen here
-#    fix: replace ^ query_term with filtered_term
+    """, ["%" + query_term + "%"]) # a LIKE injection could happen here. example: " %' OR 1=1-- "
+    #    fix: replace ^ query_term with filtered_term
