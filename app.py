@@ -13,6 +13,22 @@ from db import init_db, execute, query
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+# flaw: debug could be enabled here
+# fix:
+#@app.after_request
+#def add_security_headers(response):
+#    response.headers['X-Content-Type-Options'] = 'nosniff'
+#    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+#    response.headers['X-XSS-Protection'] = '1; mode=block'
+#    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+#    return response
+#if os.environ.get('FLASK_ENV') == 'production':
+#    app.config['DEBUG'] = False
+#    app.config['TESTING'] = False
+#else:
+#    app.config['DEBUG'] = True
+#    app.config['TESTING'] = True
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["DATABASE"] = os.path.join(basedir, "instance", "database.db")
 init_db(app)
