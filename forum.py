@@ -49,6 +49,11 @@ def remove_message(message_id):
     execute("DELETE FROM messages WHERE id = ?", [message_id])
 
 def search(query_term):
+#    fix: sanitize the input
+#    if not query_term or len(query_term.strip()) == 0:
+#        return []
+#    sanitized_term = query_term.replace("%", "\\%").replace("_", "\\_")
+    
     return query("""
         SELECT m.id message_id,
                m.thread_id,
@@ -60,5 +65,5 @@ def search(query_term):
               u.id = m.user_id AND
               m.content LIKE ?
         ORDER BY m.sent_at DESC
-    """, ["%" + query_term + "%"])
-    
+    """, ["%" + query_term + "%"]) # a LIKE injection could happen here
+#    fix: replace ^ query_term with sanitized_term
