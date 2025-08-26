@@ -533,3 +533,35 @@ def search_songs():
         flash("An error occurred during search")
         return redirect(url_for("list_songs"))
         
+# flaw: weak password recovery mechanism
+@app.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+        username = request.form["username"]
+        reset_token = str(hash(username + str(datetime.now().timestamp())))[:8]
+        execute("INSERT INTO password_resets (username, token) VALUES (?, ?)", 
+                [username, reset_token])
+        flash(f"Your reset token is: {reset_token}")
+        return redirect(url_for('reset_password'))
+    
+    return render_template("forgot_password.html")
+
+@app.route("/reset_password", methods=["GET", "POST"])
+def reset_password():
+    if request.method == "POST":
+        token = request.form["token"]
+        new_password = request.form["new_password"]
+        confirm_password = request.form["confirm_password"]
+        
+        if new_password != confirm_password:
+            flash("Passwords do not match")
+            return redirect(url_for('reset_password'))
+        result = query("SELECT username FROM password_resets WHERE token = ?", [token])
+        if result:
+            username = result[0][0]
+            execute("UPDATE users SET password_hash = ? WHERE username = ?", 
+                   [new_password, username]) 
+            flash("Password reset successful")
+            return redirect(url_for('login'))
+    
+    return render_template("reset_password.html")
