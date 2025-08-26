@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Password</title>
+</head>
+<body>
+    <h1>Reset Password</h1>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- VULNERABLE: No token in URL, just a form field -->
+    <form method="POST" action="{{ url_for('reset_password') }}">
+        <div>
+            <label for="token">Reset Token:</label>
+            <input type="text" id="token" name="token" required>
+        </div>
+        <div>
+            <label for="new_password">New Password:</label>
+            <input type="password" id="new_password" name="new_password" required>
+        </div>
+        <div>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        <button type="submit">Reset Password</button>
+    </form>
+</body>
+</html>
