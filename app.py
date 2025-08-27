@@ -537,7 +537,7 @@ def search_songs():
 @app.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
     if request.method == "GET":
-        return render_template("forgot_password.html")
+        return render_template("forgotpswd.html")
     if request.method == "POST":
         username = request.form["username"]
         
@@ -553,7 +553,7 @@ def forgot_password():
 @app.route("/reset_password", methods=["GET", "POST"])
 def reset_password():
     if request.method == "GET":
-        return render_template("reset_password.html")
+        return render_template("resetpswd.html")
     if request.method == "POST":
         token = request.form["token"]
         new_password = request.form["new_password"]
@@ -561,7 +561,7 @@ def reset_password():
         
         if new_password != confirm_password:
             flash("Passwords do not match")
-            return render_template("reset_password.html")
+            return render_template("resetpswd.html")
         
         result = query("SELECT username FROM password_resets WHERE token = ?", [token])
         if result:
@@ -573,6 +573,6 @@ def reset_password():
             return redirect(url_for('login'))
         else:
             flash("Invalid reset token")
-            return render_template("reset_password.html")
+            return render_template("resetpswd.html")
     
-    return render_template("reset_password.html")
+    return render_template("resetpswd.html")
