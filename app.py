@@ -536,18 +536,24 @@ def search_songs():
 # flaw: weak password recovery mechanism
 @app.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
+    if request.method == "GET":
+        return render_template("forgot_password.html")
     if request.method == "POST":
         username = request.form["username"]
-        reset_token = str(hash(username + str(datetime.now().timestamp())))[:8]
-        execute("INSERT INTO password_resets (username, token) VALUES (?, ?)", 
-                [username, reset_token])
-        flash(f"Your reset token is: {reset_token}")
+        
+        import time
+        predictable_token = str(hash(username + str(time.time())))[-8:]
+        execute("INSERT OR REPLACE INTO password_resets (username, token) VALUES (?, ?)", 
+               [username, predictable_token])
+        flash(f"Your reset token is: {predictable_token}")
         return redirect(url_for('reset_password'))
     
     return render_template("forgot_password.html")
 
 @app.route("/reset_password", methods=["GET", "POST"])
 def reset_password():
+    if request.method == "GET":
+        return render_template("reset_password.html")
     if request.method == "POST":
         token = request.form["token"]
         new_password = request.form["new_password"]
@@ -555,13 +561,18 @@ def reset_password():
         
         if new_password != confirm_password:
             flash("Passwords do not match")
-            return redirect(url_for('reset_password'))
+            return render_template("reset_password.html")
+        
         result = query("SELECT username FROM password_resets WHERE token = ?", [token])
         if result:
             username = result[0][0]
+            password_hash = generate_password_hash(new_password)
             execute("UPDATE users SET password_hash = ? WHERE username = ?", 
-                   [new_password, username]) 
-            flash("Password reset successful")
+                   [password_hash, username])
+            flash("Password reset successful! Please login with your new password.")
             return redirect(url_for('login'))
+        else:
+            flash("Invalid reset token")
+            return render_template("reset_password.html")
     
     return render_template("reset_password.html")
