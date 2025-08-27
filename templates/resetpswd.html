@@ -13,7 +13,7 @@
 {% endfor %}
 
 <!-- flaw: token in form -->
-<form action="/reset_password" method="post">
+<!--<form action="/reset_password" method="post">
   <p>
     <label for="token">Reset Token:</label><br />
     <input type="text" id="token" name="token" required />
@@ -28,9 +28,9 @@
     <input type="password" id="confirm_password" name="confirm_password" required />
   </p>
   <input type="submit" value="Reset Password" />
-</form>
+</form> -->
 
-<!-- fix: token in URL 
+<!-- fix: token in URL -->
 <form method="POST" action="{{ url_for('reset_password', token=token) }}">
     <div>
         <label for="new_password">New Password:</label>
@@ -43,7 +43,7 @@
         <input type="password" id="confirm_password" name="confirm_password" required>
     </div>
     <button type="submit">Reset Password</button>
-</form> -->
+</form> 
 
 <p><a href="{{ url_for('forgot_password') }}">Request new reset token</a></p>
 
