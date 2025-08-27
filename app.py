@@ -92,6 +92,14 @@ def init_db_command():
             image BLOB
         )
     """)
+
+    execute("""
+        CREATE TABLE IF NOT EXISTS password_resets (
+        username TEXT PRIMARY KEY,
+        token TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
     
     execute("""
         CREATE TABLE IF NOT EXISTS threads (
