@@ -15,19 +15,24 @@ app = Flask(__name__)
 app.secret_key = config.secret_key
 # flaw: debug could be enabled here
 # fix:
-#@app.after_request
-#def add_security_headers(response):
-#    response.headers['X-Content-Type-Options'] = 'nosniff'
-#    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-#    response.headers['X-XSS-Protection'] = '1; mode=block'
-#    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-#    return response
 #if os.environ.get('FLASK_ENV') == 'production':
 #    app.config['DEBUG'] = False
 #    app.config['TESTING'] = False
 #else:
 #    app.config['DEBUG'] = True
 #    app.config['TESTING'] = True
+# Add security headers
+#@app.after_request
+#def add_security_headers(response):
+    # Prevents the browser from MIME-sniffing 
+#    response.headers['X-Content-Type-Options'] = 'nosniff'
+    # Protects against clickjacking
+#    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    # Enables the browser's built-in XSS filter and blocks the page if an attack is detected
+#    response.headers['X-XSS-Protection'] = '1; mode=block'
+    # Enforces HTTPS communication
+#    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+#    return response
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["DATABASE"] = os.path.join(basedir, "instance", "database.db")
