@@ -465,7 +465,7 @@ def add_song():
 def edit_song(song_id):
     song = songs.get_song(song_id)
 # fix: verify the current user is the owner of the song they're trying to edit
-# flaw: remove the following 2 lines, so users can edit other users' songs
+# flaw: removing the following 2 lines, users can edit other users' songs
     if not song or song['user_id'] != session['user_id']:
         abort(403)
         
