@@ -6,8 +6,9 @@ def create_user(username, password):
 #    fix: stronger hashing
 #    password_hash = generate_password_hash(
 #        password, 
-#        method='pbkdf2:sha256', 
-#        salt_length=12
+#        method='pbkdf2:sha256',   
+#        salt_length=16,            
+#        iterations=1000000  
 #    )
     sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
     db.execute(sql, [username, password_hash])
