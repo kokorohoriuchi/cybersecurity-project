@@ -63,7 +63,7 @@ def search(query_term):
         FROM threads t, messages m, users u
         WHERE t.id = m.thread_id AND
               u.id = m.user_id AND
-              m.content LIKE ?
+              m.content LIKE ? ESCAPE '\\'
         ORDER BY m.sent_at DESC
     """, ["%" + filtered_term + "%"]) # a LIKE injection could happen here. example: " %' OR 1=1-- "
     #    fix: replace ^ query_term with filtered_term
