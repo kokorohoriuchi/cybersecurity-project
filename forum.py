@@ -50,9 +50,9 @@ def remove_message(message_id):
 
 def search(query_term):
 #    fix: filter the input
-#    if not query_term or len(query_term.strip()) == 0:
-#        return []
-#    filtered_term = query_term.replace("%", "\\%").replace("_", "\\_")
+    if not query_term or len(query_term.strip()) == 0:
+        return []
+    filtered_term = query_term.replace("%", "\\%").replace("_", "\\_")
     
     return query("""
         SELECT m.id message_id,
