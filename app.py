@@ -553,12 +553,15 @@ def forgot_password():
         return render_template("forgotpswd.html")
     if request.method == "POST":
         username = request.form["username"]
-        
-        import time
-        predictable_token = str(hash(username + str(time.time())))[-8:]
-        execute("INSERT OR REPLACE INTO password_resets (username, token) VALUES (?, ?)", 
-               [username, predictable_token])
-        flash(f"Your reset token is: {predictable_token}")
+
+        # flaw:
+        # import time
+        # predictable_token = str(hash(username + str(time.time())))[-8:]
+        # fix: 
+        secure_token = secrets.token_urlsafe(32)
+        execute("INSERT OR REPLACE INTO password_resets (username, token) VALUES (?, ?)",
+               [username, secure_token])
+        flash(f"Your reset token is: {secure_token}")
         return redirect(url_for('reset_password'))
     
     return render_template("forgot_password.html")
